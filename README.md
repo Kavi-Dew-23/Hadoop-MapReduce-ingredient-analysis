@@ -19,42 +19,42 @@ This project uses Apache Hadoop MapReduce to analyze a dataset of ingredients an
   
   # on Windows
   
-  wsl --install
+      wsl --install
   
   After installation:
   
-  wsl
+      wsl
 
   #  Install Java in WSL
   
-  sudo apt update
+      sudo apt update
   
-  sudo apt install openjdk-11-jdk -y
+      sudo apt install openjdk-11-jdk -y
   
-  java -version
+      java -version
 
  # Download and Install Hadoop in WSL
  
-   cd ~
+     cd ~
    
-  wget https://downloads.apache.org/hadoop/common/hadoop-2.10.2/hadoop-2.10.2.tar.gz
+    wget https://downloads.apache.org/hadoop/common/hadoop-2.10.2/hadoop-2.10.2.tar.gz
   
-  tar -xvzf hadoop-2.10.2.tar.gz
+    tar -xvzf hadoop-2.10.2.tar.gz
   
-  mv hadoop-2.10.2 hadoop
+    mv hadoop-2.10.2 hadoop
 
 
 # Set Environment Variables
-  nano ~/.bashrc
+    nano ~/.bashrc
   
 
 Add to the bottom:
 
-  export HADOOP_HOME=~/hadoop
+    export HADOOP_HOME=~/hadoop
   
-  export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
+    export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
   
-  export PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin
+    export PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin
 
   Apply changes:
   
@@ -62,17 +62,17 @@ Add to the bottom:
 
 #  Set Java Path in Hadoop Config
 
-  nano ~/hadoop/etc/hadoop/hadoop-env.sh
+    nano ~/hadoop/etc/hadoop/hadoop-env.sh
   
-  export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
+    export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
 
 #  Format HDFS and Start Hadoop
   
-  hdfs namenode -format
+     hdfs namenode -format
   
-  start-dfs.sh
+    start-dfs.sh
   
-  start-yarn.sh
+    start-yarn.sh
 
   If SSH fails, run:
   
@@ -87,46 +87,46 @@ Add to the bottom:
 
 Then restart:
 
-  start-dfs.sh
+    start-dfs.sh
   
-  start-yarn.sh
+    start-yarn.sh
 
 # Create Project Folder
   
-  mkdir ~/ingredient-count
+    mkdir ~/ingredient-count
   
-  cd ~/ingredient-count
+    cd ~/ingredient-count
 
 
 #  Save Java Code
 
-  nano IngredientFrequency.java
+    nano IngredientFrequency.java
 
 
 # Compile and Package
 
-  javac -classpath $(hadoop classpath) -d . IngredientFrequency.java
+    javac -classpath $(hadoop classpath) -d . IngredientFrequency.java
   
-  jar -cvf ingredientcount.jar *.class
+    jar -cvf ingredientcount.jar *.class
 
 
 # Copy Dataset to WSL
 
-  mkdir ~/datasets
+    mkdir ~/datasets
   
-  cp "/mnt/c/Users/ASUS/Documents/MapReduce/recipes_data.csv" ~/datasets/
+    cp "/mnt/c/Users/ASUS/Documents/MapReduce/recipes_data.csv" ~/datasets/
 
 
 # Step 1: Upload input to HDFS
 
-  hdfs dfs -mkdir -p /input
+    hdfs dfs -mkdir -p /input
   
-  hdfs dfs -put ~/datasets/recipes_data.csv /input/
+    hdfs dfs -put ~/datasets/recipes_data.csv /input/
 
 
 # Step 2: Run MapReduce
 
-  hadoop jar IngredientCount.jar IngredientCount /input /output
+    hadoop jar IngredientCount.jar IngredientCount /input /output
 
 
 # Step 3: View results
